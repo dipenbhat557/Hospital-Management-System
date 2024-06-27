@@ -1,27 +1,19 @@
-# Dockerfile
-FROM node:18
+FROM node:16
 
-# Install PostgreSQL client
-RUN apt-get update && apt-get install -y postgresql-client
-
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+RUN apt-get update && apt-get install -y postgresql-client
+
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+RUN npm install -g prisma
+
 COPY . .
 
-# Copy the entrypoint script with executable permissions
 COPY ./docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
+ENTRYPOINT ["./docker-entrypoint.sh"]
 
-# Expose port
-EXPOSE 3000
-
-# Set the entrypoint script to run on container startup
-CMD ["./docker-entrypoint.sh"]
+CMD ["npm", "run", "dev"]

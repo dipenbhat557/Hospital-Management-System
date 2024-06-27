@@ -1,13 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-# Wait for the database to be ready
-until pg_isready -h postgres -p 5432 -U root; do
-  echo "Waiting for postgres..."
+until pg_isready -h postgres -p 5432; do
+  echo "Waiting for PostgreSQL..."
   sleep 2
 done
 
-# Run Prisma migrations
-npx prisma migrate dev --name init
+npx prisma migrate deploy
 
-# Start the Next.js development server
-npm run dev
+exec "$@"
