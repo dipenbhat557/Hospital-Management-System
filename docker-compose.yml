@@ -24,8 +24,8 @@ services:
       - postgres
     environment:
       DATABASE_URL: "postgresql://root:root@postgres:5432/hms_db"
-      JWT_SECRET: "udlifjfhla;ildkjihkflafdhk.j/k;f/a.nd"
-      SECRET: "afklhadfkl/j.maf/dlja;fkdhaf;dkh"
+      JWT_SECRET: "fa;dlkfafblfjdafA:df;alkajfd;s"
+      SECRET: "adsf;lkjakf'ojadfsadsf;kdfl;jaldfdsflk;"
 
 volumes:
   postgres_data:
