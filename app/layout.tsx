@@ -1,22 +1,28 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "HMS - Where Healing Matters",
   description: "Hospital Management System",
 };
 
-export default function RootLayout({
+const RootLayout = ({
+  session,
   children,
-}: Readonly<{
+}: {
+  session: any;
   children: React.ReactNode;
-}>) {
+}) => {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <>
+      <div className={inter.className}>
+        <SessionProvider session={session}>{children}</SessionProvider>
+      </div>
+    </>
   );
-}
+};
+
+export default RootLayout;

@@ -8,6 +8,7 @@ generator client {
 }
 
 model User {
+<<<<<<< HEAD
   id            Int       @id @default(autoincrement())
   name          String?
   email         String    @unique
@@ -82,3 +83,12 @@ enum Role {
   DOCTOR
   PATIENT
 }
+=======
+  id            Int      @id @default(autoincrement())
+  name          String?
+  email         String   @unique
+  password      String
+  emailVerified DateTime?
+  role          String
+}
+>>>>>>> 2987ea6f22aa22093fb1be7051ec1f5e1a144fe9

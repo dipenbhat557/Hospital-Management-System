@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { email, password } = req.body;
+  const { email, password, name, role } = req.body;
 
   const existingUser = await prisma.user.findUnique({
     where: { email },
@@ -24,6 +25,8 @@ export default async (req, res) => {
     data: {
       email,
       password: hashedPassword,
+      name,
+      role,
     },
   });
 
