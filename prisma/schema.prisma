@@ -8,6 +8,82 @@ generator client {
 }
 
 model User {
+<<<<<<< HEAD
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String    @unique
+  password      String
+  emailVerified DateTime?
+  role          Role
+  DOCTOR        DOCTOR?
+  Patient       Patient?
+}
+
+model DOCTOR {
+  id             String           @id @default(uuid())
+  userId         Int              @unique
+  user           User             @relation(fields: [userId], references: [id])
+  specialisation String?
+  MedicalReports MedicalReports[]
+  Appointment    Appointment[]
+}
+
+model MedicalReports {
+  id             String   @id @default(uuid())
+  problem        String
+  solutions      String
+  medicalTest    String
+  testReport     String
+  referredBy     String
+  doctor         DOCTOR   @relation(fields: [referredBy], references: [id])
+  referredTo     String
+  patient        Patient  @relation(fields: [referredTo], references: [id])
+  timeOfCreation DateTime @default(now())
+}
+
+model Patient {
+  id             String           @id @default(uuid())
+  medicalReports MedicalReports[]
+  paymentHistory Payement[]
+  appointment    Appointment[]
+  userId         Int              @unique
+  user           User             @relation(fields: [userId], references: [id])
+  phoneNumber    Int
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  time      DateTime
+  date      DateTime
+  doctorId  String
+  doctor    DOCTOR   @relation(fields: [doctorId], references: [id])
+  verified  Boolean
+  Patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+}
+
+model Payement {
+  id          String   @id @default(uuid())
+  items       Item[]
+  totalAmount Int
+  Patient     Patient? @relation(fields: [patientId], references: [id])
+  patientId   String?
+  paid        Boolean
+  method      Boolean
+}
+
+model Item {
+  id         String    @id @default(uuid())
+  cost       Int
+  Payement   Payement? @relation(fields: [payementId], references: [id])
+  payementId String?
+}
+
+enum Role {
+  DOCTOR
+  PATIENT
+}
+=======
   id            Int      @id @default(autoincrement())
   name          String?
   email         String   @unique
@@ -15,3 +91,4 @@ model User {
   emailVerified DateTime?
   role          String
 }
+>>>>>>> 2987ea6f22aa22093fb1be7051ec1f5e1a144fe9
