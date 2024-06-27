@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: hms_db
+    ports:
+      - "5432:5432"
+
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgresql://root:root@postgres:5432/hms_db"
+      JWT_SECRET: "udlifjfhla;ildkjihkflafdhk.j/k;f/a.nd"
+      SECRET: "afklhadfkl/j.maf/dlja;fkdhaf;dkh"
+
+volumes:
+  postgres_data:
