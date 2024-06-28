@@ -1,19 +1,12 @@
-FROM node
+FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y postgresql-client
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
 
-COPY package*.json ./
-
-RUN npm install
-
-RUN npm install -g prisma
+RUN  npm ci
 
 COPY . .
 
-COPY ./docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
-ENTRYPOINT ["./docker-entrypoint.sh"]
-
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev:docker"]

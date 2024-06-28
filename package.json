@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "studio": "npx prisma studio",
+    "prisma:migrate": "npx prisma migrate dev --name init",
+    "prisma:generate": "npx prisma generate",
+    "prisma:docker": "npm run prisma:migrate && npm run prisma:generate",
+    "dev:docker": "npm run prisma:docker && npm run dev"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
