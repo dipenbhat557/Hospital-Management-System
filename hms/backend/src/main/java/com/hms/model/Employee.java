@@ -13,17 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-    private String dob;
-    private String gender;
+    private String salary;
+    private String sex;
     private String mobNo;
-    private int age;
+    private String address;
+    private String state;
+    private String city;
+    private String pinNo;
 
     @OneToOne
     private User user;

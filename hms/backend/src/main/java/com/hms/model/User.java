@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private String name;
     private String email;
@@ -27,9 +27,8 @@ public class User {
     private Role role;
 
     @OneToOne(mappedBy = "user")
-    private Doctor doctor;
+    private Employee employee;
 
     @OneToOne(mappedBy = "user")
     private Patient patient;
-
 }
