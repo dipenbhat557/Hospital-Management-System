@@ -18,6 +18,8 @@ public class SignupRequest {
     private String mobNo;
     private int age;
     private String salary;
+    private String department;
+    private String qualification;
     private Address address;
 
 }

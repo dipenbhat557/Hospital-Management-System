@@ -25,6 +25,8 @@ public class Employee {
     private String salary;
     private String sex;
     private String mobNo;
+    private String dob;
+    private int age;
 
     @OneToOne
     private Address address;

@@ -1,7 +1,9 @@
 package com.hms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hms.payload.Address;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +29,8 @@ public class Patient {
     private String mobNo;
     private int age;
 
-    @OneToOne
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private User user;
 
     @OneToOne
