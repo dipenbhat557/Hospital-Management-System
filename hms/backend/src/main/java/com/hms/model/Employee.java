@@ -1,5 +1,7 @@
 package com.hms.model;
 
+import com.hms.payload.Address;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +25,9 @@ public class Employee {
     private String salary;
     private String sex;
     private String mobNo;
-    private String address;
-    private String state;
-    private String city;
-    private String pinNo;
+
+    @OneToOne
+    private Address address;
 
     @OneToOne
     private User user;

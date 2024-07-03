@@ -1,5 +1,7 @@
 package com.hms.model;
 
+import com.hms.payload.Address;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,4 +29,7 @@ public class Patient {
 
     @OneToOne
     private User user;
+
+    @OneToOne
+    private Address address;
 }

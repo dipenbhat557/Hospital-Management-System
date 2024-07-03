@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,25 +20,19 @@ import com.hms.exception.ResourceNotFoundException;
 import com.hms.model.User;
 import com.hms.payload.AuthResponse;
 import com.hms.payload.LoginRequest;
-import com.hms.payload.Role;
+import com.hms.payload.SignupRequest;
 import com.hms.repo.UserRepo;
-import com.hms.repo.PatientRepo;
-import com.hms.repo.EmployeeRepo;
-import com.hms.model.Patient;
-import com.hms.model.Employee;
+import com.hms.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserRepo userRepository;
-
-    @Autowired
-    private PatientRepo patientRepository;
-
-    @Autowired
-    private EmployeeRepo employeeRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,29 +44,30 @@ public class AuthController {
     private CustomUserService customUserService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws ResourceNotFoundException {
-        String email = user.getEmail();
-        String name = user.getName();
-        String password = user.getPassword();
-        Role role = user.getRole();
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest signupRequest)
+            throws ResourceNotFoundException {
+        String email = signupRequest.getEmail();
+        String password = signupRequest.getPassword();
 
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
             throw new ResourceNotFoundException("Email is used with another account");
         }
 
-        user.setPassword(passwordEncoder.encode(password));
-        userRepository.save(user);
+        // user.setPassword(passwordEncoder.encode(password));
+        // userRepository.save(user);
 
-        if (role == Role.PATIENT) {
-            Patient patient = new Patient();
-            patient.setUser(user);
-            patientRepository.save(patient);
-        } else {
-            Employee employee = new Employee();
-            employee.setUser(user);
-            employeeRepository.save(employee);
-        }
+        // if (role == Role.PATIENT) {
+        // Patient patient = new Patient();
+        // patient.setUser(user);
+        // patientRepository.save(patient);
+        // } else {
+        // Employee employee = new Employee();
+        // employee.setUser(user);
+        // employeeRepository.save(employee);
+        // }
+
+        this.userService.create(signupRequest);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -83,6 +77,10 @@ public class AuthController {
         AuthResponse response = new AuthResponse(jwt, true);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    public void setPatient() {
+
     }
 
     @PostMapping("/signin")
