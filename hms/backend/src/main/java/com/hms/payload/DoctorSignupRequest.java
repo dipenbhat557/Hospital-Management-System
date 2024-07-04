@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class DoctorSignupRequest {
     private String department;
     private String qualification;
+    private Integer userId;
     private EmployeeSignupRequest employeeSignupRequest;
 }

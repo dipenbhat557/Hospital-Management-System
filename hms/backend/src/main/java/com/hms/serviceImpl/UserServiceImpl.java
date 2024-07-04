@@ -26,15 +26,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PatientService patientService;
-
-    @Autowired
-    private DoctorService doctorService;
-
-    @Autowired
-    private EmployeeService employeeService;
-
     @Override
     public User create(UserSignupRequest userSignupRequest) {
 

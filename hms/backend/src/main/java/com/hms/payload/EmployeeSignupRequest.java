@@ -14,6 +14,7 @@ public class EmployeeSignupRequest {
     private String mobNo;
     private String dob;
     private int age;
+    private Integer userId;
     private Address address;
 
 }

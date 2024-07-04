@@ -13,5 +13,6 @@ public class PatientSignupRequest {
     private String gender;
     private String mobNo;
     private int age;
+    private Integer userId;
     private Address address;
 }
