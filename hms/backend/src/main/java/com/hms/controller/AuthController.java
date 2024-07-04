@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,11 @@ import com.hms.exception.ResourceNotFoundException;
 import com.hms.model.User;
 import com.hms.payload.AuthResponse;
 import com.hms.payload.LoginRequest;
-import com.hms.payload.SignupRequest;
 import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
 import com.hms.service.UserService;
+
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
@@ -55,22 +57,9 @@ public class AuthController {
             throw new ResourceNotFoundException("Email is used with another account");
         }
 
-        // user.setPassword(passwordEncoder.encode(password));
-        // userRepository.save(user);
-
-        // if (role == Role.PATIENT) {
-        // Patient patient = new Patient();
-        // patient.setUser(user);
-        // patientRepository.save(patient);
-        // } else {
-        // Employee employee = new Employee();
-        // employee.setUser(user);
-        // employeeRepository.save(employee);
-        // }
-
         this.userService.create(userSignupRequest);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication = authenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
@@ -78,10 +67,6 @@ public class AuthController {
         AuthResponse response = new AuthResponse(jwt, true);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-    }
-
-    public void setPatient() {
-
     }
 
     @PostMapping("/signin")
@@ -110,6 +95,9 @@ public class AuthController {
             throw new BadCredentialsException("Invalid password or username");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        User user = this.userRepository.findByEmail(username);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString())));
     }
 }

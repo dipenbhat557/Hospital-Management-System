@@ -3,10 +3,12 @@ package com.hms.config;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +22,22 @@ public class TokenProvider {
 
     SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 
-    // In TokenProvider.java or wherever you handle token creation
     public String generateToken(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+        // Get authorities of the authenticated user
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
-        // Include role in the JWT claims
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userPrincipal.getAuthorities().iterator().next().getAuthority());
+        // If no authorities, throw an exception
+        if (authorities.isEmpty()) {
+            throw new IllegalArgumentException("User has no authorities");
+        }
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setClaims(claims)
+                .setSubject(authentication.getName())
+                .claim("auth", authorities)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + 2 * 60 * 60 * 1000))
+                .setExpiration(new Date((new Date()).getTime() + 5 * 60 * 60000))
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
     }
@@ -41,8 +46,7 @@ public class TokenProvider {
         jwt = jwt.substring(7);
         Claims claim = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
 
-        String email = String.valueOf(claim.get("email"));
-        return email;
+        return String.valueOf(claim.get("email"));
     }
 
 }
