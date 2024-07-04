@@ -1,6 +1,7 @@
 package com.hms.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hms.model.Doctor;
 import com.hms.model.Employee;
@@ -9,6 +10,7 @@ import com.hms.repo.DoctorRepo;
 import com.hms.service.DoctorService;
 import com.hms.service.EmployeeService;
 
+@Service
 public class DoctorServiceImpl implements DoctorService {
 
     @Autowired

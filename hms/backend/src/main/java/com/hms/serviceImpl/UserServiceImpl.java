@@ -2,6 +2,7 @@ package com.hms.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.hms.model.Doctor;
 import com.hms.model.Employee;
@@ -15,6 +16,7 @@ import com.hms.service.EmployeeService;
 import com.hms.service.PatientService;
 import com.hms.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

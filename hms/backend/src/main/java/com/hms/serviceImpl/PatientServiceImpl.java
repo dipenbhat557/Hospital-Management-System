@@ -1,6 +1,7 @@
 package com.hms.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hms.model.Patient;
 import com.hms.payload.Address;
@@ -9,6 +10,7 @@ import com.hms.repo.AddressRepo;
 import com.hms.repo.PatientRepo;
 import com.hms.service.PatientService;
 
+@Service
 public class PatientServiceImpl implements PatientService {
 
     @Autowired

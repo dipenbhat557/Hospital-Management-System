@@ -1,7 +1,9 @@
 package com.hms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hms.payload.Address;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +21,7 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     private String name;
     private String salary;
@@ -31,6 +33,7 @@ public class Employee {
     @OneToOne
     private Address address;
 
-    @OneToOne
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private User user;
 }

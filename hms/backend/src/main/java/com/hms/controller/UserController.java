@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hms.model.Doctor;
-import com.hms.model.Employee;
 import com.hms.model.Patient;
 import com.hms.model.User;
 import com.hms.payload.Role;

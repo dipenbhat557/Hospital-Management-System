@@ -16,7 +16,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     private String type;
     private int capacity;
