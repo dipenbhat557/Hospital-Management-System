@@ -10,6 +10,7 @@ import com.hms.model.Patient;
 import com.hms.model.User;
 import com.hms.payload.Role;
 import com.hms.payload.SignupRequest;
+import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
 import com.hms.service.DoctorService;
 import com.hms.service.EmployeeService;
@@ -35,12 +36,12 @@ public class UserServiceImpl implements UserService {
     private EmployeeService employeeService;
 
     @Override
-    public User create(SignupRequest signupRequest) {
+    public User create(UserSignupRequest userSignupRequest) {
 
-        String name = signupRequest.getName();
-        String email = signupRequest.getEmail();
-        String password = signupRequest.getPassword();
-        Role role = signupRequest.getRole();
+        String name = userSignupRequest.getName();
+        String email = userSignupRequest.getEmail();
+        String password = userSignupRequest.getPassword();
+        Role role = userSignupRequest.getRole();
 
         User user = new User();
         user.setName(name);
@@ -48,16 +49,16 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(password));
         user.setRole(role);
 
-        if (role == Role.PATIENT) {
-            Patient patient = this.patientService.create(signupRequest);
-            user.setPatient(patient);
-        } else if (role == Role.DOCTOR) {
-            Doctor doctor = this.doctorService.create(signupRequest);
-            user.setEmployee(doctor.getEmployee());
-        } else {
-            Employee employee = this.employeeService.create(signupRequest);
-            user.setEmployee(employee);
-        }
+        // if (role == Role.PATIENT) {
+        // Patient patient = this.patientService.create(signupRequest);
+        // user.setPatient(patient);
+        // } else if (role == Role.DOCTOR) {
+        // Doctor doctor = this.doctorService.create(signupRequest);
+        // user.setEmployee(doctor.getEmployee());
+        // } else {
+        // Employee employee = this.employeeService.create(signupRequest);
+        // user.setEmployee(employee);
+        // }
 
         user = this.userRepo.save(user);
 

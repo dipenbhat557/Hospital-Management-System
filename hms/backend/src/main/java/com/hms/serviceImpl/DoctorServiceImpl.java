@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.hms.model.Doctor;
 import com.hms.model.Employee;
+import com.hms.payload.DoctorSignupRequest;
 import com.hms.payload.SignupRequest;
 import com.hms.repo.DoctorRepo;
 import com.hms.service.DoctorService;
@@ -20,12 +21,12 @@ public class DoctorServiceImpl implements DoctorService {
     private EmployeeService employeeService;
 
     @Override
-    public Doctor create(SignupRequest signupRequest) {
+    public Doctor create(DoctorSignupRequest doctorSignupRequest) {
 
-        String department = signupRequest.getDepartment();
-        String qualification = signupRequest.getQualification();
+        String department = doctorSignupRequest.getDepartment();
+        String qualification = doctorSignupRequest.getQualification();
 
-        Employee employee = this.employeeService.create(signupRequest);
+        Employee employee = this.employeeService.create(doctorSignupRequest.getEmployeeSignupRequest());
 
         Doctor doctor = new Doctor();
         doctor.setDepartment(department);

@@ -21,6 +21,7 @@ import com.hms.model.User;
 import com.hms.payload.AuthResponse;
 import com.hms.payload.LoginRequest;
 import com.hms.payload.SignupRequest;
+import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
 import com.hms.service.UserService;
 
@@ -44,10 +45,10 @@ public class AuthController {
     private CustomUserService customUserService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest signupRequest)
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody UserSignupRequest userSignupRequest)
             throws ResourceNotFoundException {
-        String email = signupRequest.getEmail();
-        String password = signupRequest.getPassword();
+        String email = userSignupRequest.getEmail();
+        String password = userSignupRequest.getPassword();
 
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
@@ -67,7 +68,7 @@ public class AuthController {
         // employeeRepository.save(employee);
         // }
 
-        this.userService.create(signupRequest);
+        this.userService.create(userSignupRequest);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
