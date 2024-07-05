@@ -3,23 +3,20 @@ package com.hms.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hms.config.CustomUserService;
-import com.hms.config.TokenProvider;
+import com.hms.config.JwtHelper;
 import com.hms.exception.ResourceNotFoundException;
 import com.hms.model.User;
-import com.hms.payload.AuthResponse;
+import com.hms.payload.JwtResponse;
 import com.hms.payload.LoginRequest;
 import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
@@ -38,16 +35,16 @@ public class AuthController {
     private UserRepo userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    private CustomUserService customUserService;
+    private JwtHelper jwtHelper;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody UserSignupRequest userSignupRequest)
+    public ResponseEntity<JwtResponse> createUserHandler(@RequestBody UserSignupRequest userSignupRequest)
             throws ResourceNotFoundException {
         String email = userSignupRequest.getEmail();
         String password = userSignupRequest.getPassword();
@@ -59,45 +56,36 @@ public class AuthController {
 
         this.userService.create(userSignupRequest);
 
-        Authentication authentication = authenticate(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        authenticateUser(email, password);
 
-        String jwt = tokenProvider.generateToken(authentication);
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(userSignupRequest.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
+        JwtResponse response = new JwtResponse();
+        response.setToken(token);
+        response.setUser((User) userDetails);
 
-        AuthResponse response = new AuthResponse(jwt, true);
-
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) {
-        String email = request.getEmail();
-        String password = request.getPassword();
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
 
-        Authentication authentication = authenticate(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        this.authenticateUser(request.getEmail(), request.getPassword());
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
+        JwtResponse response = new JwtResponse();
+        response.setToken(token);
+        response.setUser((User) userDetails);
 
-        String jwt = tokenProvider.generateToken(authentication);
+        return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
 
-        AuthResponse response = new AuthResponse(jwt, true);
-
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    public Authentication authenticate(String username, String password) {
-        UserDetails userDetails = customUserService.loadUserByUsername(username);
-
-        if (userDetails == null) {
-            throw new BadCredentialsException("Invalid username");
+    public void authenticateUser(String username, String password) {
+        try {
+            this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (BadCredentialsException e) {
+            throw new ResourceNotFoundException("Invalid username or password");
         }
-
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Invalid password or username");
-        }
-
-        User user = this.userRepository.findByEmail(username);
-
-        return new UsernamePasswordAuthenticationToken(userDetails, null,
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString())));
     }
 }
