@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.hms.exception.ResourceNotFoundException;
 import com.hms.model.User;
 import com.hms.payload.Role;
 import com.hms.payload.UserSignupRequest;
@@ -47,6 +48,19 @@ public class UserServiceImpl implements UserService {
         user = this.userRepo.save(user);
 
         return user;
+    }
+
+    @Override
+    public User getById(int id) {
+        return this.userRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+    }
+
+    @Override
+    public void deleteById(int id) {
+        this.userRepo.delete(this.userRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found")));
+
     }
 
 }

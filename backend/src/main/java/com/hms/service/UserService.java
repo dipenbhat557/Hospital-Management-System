@@ -7,4 +7,8 @@ public interface UserService {
 
     public User create(UserSignupRequest userSignupRequest);
 
+    public User getById(int id);
+
+    public void deleteById(int id);
+
 }

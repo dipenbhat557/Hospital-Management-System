@@ -1,7 +1,6 @@
 package com.hms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hms.payload.Address;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

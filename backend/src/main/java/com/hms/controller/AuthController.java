@@ -22,8 +22,6 @@ import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
 import com.hms.service.UserService;
 
-import java.util.Collections;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

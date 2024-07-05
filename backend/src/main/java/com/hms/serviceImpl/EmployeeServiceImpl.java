@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hms.exception.ResourceNotFoundException;
+import com.hms.model.Address;
 import com.hms.model.Employee;
 import com.hms.model.User;
-import com.hms.payload.Address;
 import com.hms.payload.EmployeeSignupRequest;
 import com.hms.repo.AddressRepo;
 import com.hms.repo.EmployeeRepo;

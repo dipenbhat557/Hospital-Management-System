@@ -1,6 +1,5 @@
 package com.hms.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hms.model.Doctor;
@@ -14,13 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/doctor")
 public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
 
-    @PostMapping
+    @PostMapping("/auth/doctor")
     public ResponseEntity<Doctor> createDoctor(@RequestBody DoctorSignupRequest doctorSignupRequest) {
 
         return new ResponseEntity<>(this.doctorService.create(doctorSignupRequest), HttpStatus.CREATED);

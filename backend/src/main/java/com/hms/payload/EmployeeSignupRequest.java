@@ -1,5 +1,7 @@
 package com.hms.payload;
 
+import com.hms.model.Address;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

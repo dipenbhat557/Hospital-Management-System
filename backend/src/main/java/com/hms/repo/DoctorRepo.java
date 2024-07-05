@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.hms.model.Doctor;
 import com.hms.model.User;
 
-public interface DoctorRepo extends JpaRepository<Doctor, Long> {
+public interface DoctorRepo extends JpaRepository<Doctor, Integer> {
     Doctor findByEmployee_User(User user);
 }
