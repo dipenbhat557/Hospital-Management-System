@@ -31,13 +31,10 @@ public class MedicalHistoryContoller {
         return new ResponseEntity(history, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<List<MedicalHistory>> addMedicalHistory(@PathVariable int id,
-            @RequestBody HistoryRequest req) {
+    @PostMapping
+    public ResponseEntity<List<MedicalHistory>> addMedicalHistory(@RequestBody HistoryRequest req) {
 
-        System.out.println("The request form m controller " + req);
-
-        List<MedicalHistory> newHistories = this.historyService.addPatientHistory(id, req);
+        List<MedicalHistory> newHistories = this.historyService.addPatientHistory(req);
 
         return new ResponseEntity<>(newHistories, HttpStatus.OK);
     }

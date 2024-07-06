@@ -9,7 +9,7 @@ public interface HistoryService {
 
     List<MedicalHistory> getPatientsHistory(int patientId);
 
-    List<MedicalHistory> addPatientHistory(int id, HistoryRequest req);
+    List<MedicalHistory> addPatientHistory(HistoryRequest req);
 
     void deleteHistory(int id);
 

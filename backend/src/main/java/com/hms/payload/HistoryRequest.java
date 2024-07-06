@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class HistoryRequest {
 
     private String description;
+    private int patientId;
+    private int doctorId;
 
 }

@@ -1,6 +1,5 @@
 package com.hms.serviceImpl;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import com.hms.model.Bill;
 import com.hms.model.Patient;
 import com.hms.payload.BillRequest;
 import com.hms.repo.BillRepo;
-import com.hms.repo.PatientRepo;
 import com.hms.service.BillService;
 import com.hms.service.PatientService;
 
@@ -35,7 +33,7 @@ public class BillServiceImpl implements BillService {
         bill.setPatient(patient);
         bill.setAmount(req.getAmount());
         bill.setDate(new Date());
-        bill.setPaymentMehtod(req.getPaymentMethod());
+        bill.setPaymentMethod(req.getPaymentMethod());
 
         bill = this.billRepo.save(bill);
 
