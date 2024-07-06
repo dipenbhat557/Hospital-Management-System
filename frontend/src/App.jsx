@@ -8,6 +8,11 @@ import PatientMainPage from "./pages/patient/PatientMainPage";
 import PatientMedicalHistory from "./pages/patient/PatientMedicalHistory";
 import PatientPaymentHistory from "./pages/patient/PatientPaymentHistory";
 import PatientProfile from "./pages/patient/PatientProfile";
+import CommonSignup from "./pages/auth/CommonSignup";
+import CommonSignin from "./pages/auth/CommonSignin";
+import PatientSetup from "./pages/auth/PatientSetup";
+import DoctorSetup from "./pages/auth/DoctorSetup";
+import EmployeeSetup from "./pages/auth/EmployeeSetup";
 
 function App() {
   return (
@@ -25,6 +30,11 @@ function App() {
 
           <Route path="/patient/payment" element={<PatientPaymentHistory />} />
           <Route path="/patient/profile" element={<PatientProfile />} />
+          <Route path="/auth/signup" element={<CommonSignup />} />
+          <Route path="/auth/signin" element={<CommonSignin />} />
+          <Route path="/auth/patient" element={<PatientSetup />} />
+          <Route path="/auth/doctor" element={<DoctorSetup />} />
+          <Route path="/auth/employee" element={<EmployeeSetup />} />
         </Routes>
       </BrowserRouter>
     </div>
