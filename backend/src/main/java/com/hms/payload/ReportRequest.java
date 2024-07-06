@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoryRequest {
+public class ReportRequest {
 
-    private String description;
+    private String testType;
+    private String result;
     private int patientId;
     private int doctorId;
 

@@ -24,6 +24,11 @@ public class Report {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private Doctor doctor;
+
     private String testType;
     private String result;
+
 }

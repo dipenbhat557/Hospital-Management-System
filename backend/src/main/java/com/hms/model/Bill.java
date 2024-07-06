@@ -31,6 +31,6 @@ public class Bill {
 
     private Date date;
 
-    private String paymentMehtod;
+    private String paymentMethod;
 
 }
