@@ -1,5 +1,7 @@
 package com.hms.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,25 @@ public class DoctorServiceImpl implements DoctorService {
         user.setEmployee(employee);
         this.userRepo.save(user);
         return doctor;
+    }
+
+    @Override
+    public List<Doctor> getAllDoctors() {
+        return this.doctorRepo.findAll();
+    }
+
+    @Override
+    public Doctor getById(int id) {
+        return this.doctorRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected doctor is not found"));
+    }
+
+    @Override
+    public void deleteById(int id) {
+        Doctor doctor = this.doctorRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected doctor is not found"));
+
+        this.doctorRepo.delete(doctor);
     }
 
 }

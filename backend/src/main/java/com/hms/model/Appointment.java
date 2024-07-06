@@ -1,5 +1,6 @@
 package com.hms.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
