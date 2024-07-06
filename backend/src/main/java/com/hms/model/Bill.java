@@ -1,5 +1,8 @@
 package com.hms.model;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +28,9 @@ public class Bill {
     private Patient patient;
 
     private double amount;
+
+    private Date date;
+
+    private String paymentMehtod;
+
 }
