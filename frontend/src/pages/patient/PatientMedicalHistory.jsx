@@ -1,18 +1,18 @@
 import React from "react";
 import PatientNavbar from "../../components/PatientNavbar";
 import PatientSideBar from "../../components/PatientSideBar";
-import BookConsultations from "../../components/BookConsultations";
+import PatientHistory from "../../components/PatientHistory";
 
-function PatientMainPage() {
+function PatientMedicalHistory() {
   return (
     <div>
       <PatientNavbar />
       <div className="flex">
         <PatientSideBar />
-        <BookConsultations />
+        <PatientHistory />
       </div>
     </div>
   );
 }
 
-export default PatientMainPage;
+export default PatientMedicalHistory;
