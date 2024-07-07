@@ -28,10 +28,9 @@ function CommonSignin() {
         }
       );
 
-      const data = response.data;
-      setUser(data.response);
-      setToken(data.token);
-      console.log("Login successful!", data.response);
+      const data = await response.data;
+      setUser(data?.response);
+      setToken(data?.token);
 
       if (user.role === "DOCTOR") {
         window.location.href = "/doctor";
