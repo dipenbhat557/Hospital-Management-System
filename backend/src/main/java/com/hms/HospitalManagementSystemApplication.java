@@ -18,9 +18,9 @@ public class HospitalManagementSystemApplication {
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("Ecommerce")
+						.title("HMS - Hospital Management System")
 						.version("1.0")
-						.description("API documentation of Ecommerce website for avaash")
+						.description("API documentation of Hospital Management System")
 						.termsOfService("Terms of service")
 						.contact(new io.swagger.v3.oas.models.info.Contact()
 								.name("Dipendra")
