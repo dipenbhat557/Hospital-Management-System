@@ -55,7 +55,7 @@ function BookConsultations() {
           }
         );
         const userData = await userResponse.data;
-        setPatientId(userData?.id);
+        setPatientId(userData?.patient?.id);
       } catch (error) {
         console.error("Error fetching patient data:", error);
       }
@@ -78,11 +78,11 @@ function BookConsultations() {
       date: date,
       patientId: patientId,
       doctorId: selectedDoctor,
-      verified: false,
+      verified: true,
     };
 
     try {
-      await axios.post(
+      const reponse = await axios.post(
         `${import.meta.env.VITE_APP_API_ROOT}/api/appointment`,
         formData,
         {
@@ -93,10 +93,10 @@ function BookConsultations() {
         }
       );
 
+      console.log(reponse);
       navigate("/patient");
     } catch (error) {
       console.error("Error creating appointment:", error);
-      // Handle specific error cases or display error message to user
     }
   };
 
