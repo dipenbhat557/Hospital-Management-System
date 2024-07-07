@@ -27,12 +27,13 @@ function CommonSignin() {
           },
         }
       );
-
       const data = response.data;
-      setUser(data.response);
+      console.log(data.token);
+      console.log(data.response);
       setToken(data.token);
-      console.log("Login successful!", data.response);
-
+      setUser(data.response);
+      console.log(user);
+      console.log(token);
       if (user.role === "DOCTOR") {
         window.location.href = "/doctor";
       } else if (user.role === "PATIENT") {
