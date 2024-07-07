@@ -18,6 +18,7 @@ import com.hms.exception.ResourceNotFoundException;
 import com.hms.model.User;
 import com.hms.payload.JwtResponse;
 import com.hms.payload.LoginRequest;
+import com.hms.payload.UserResponse;
 import com.hms.payload.UserSignupRequest;
 import com.hms.repo.UserRepo;
 import com.hms.service.UserService;
@@ -60,7 +61,16 @@ public class AuthController {
         String token = this.jwtHelper.generateToken(userDetails);
         JwtResponse response = new JwtResponse();
         response.setToken(token);
-        response.setUser((User) userDetails);
+
+        User user = (User) userDetails;
+
+        UserResponse res = new UserResponse();
+        res.setId(user.getId());
+        res.setName(user.getName());
+        res.setEmail(user.getEmail());
+        res.setRole(user.getRole());
+        res.setAuthorities(user.getAuthorities());
+        response.setResponse(res);
 
         return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
     }
@@ -73,7 +83,15 @@ public class AuthController {
         String token = this.jwtHelper.generateToken(userDetails);
         JwtResponse response = new JwtResponse();
         response.setToken(token);
-        response.setUser((User) userDetails);
+        User user = (User) userDetails;
+
+        UserResponse res = new UserResponse();
+        res.setId(user.getId());
+        res.setName(user.getName());
+        res.setEmail(user.getEmail());
+        res.setRole(user.getRole());
+        res.setAuthorities(user.getAuthorities());
+        response.setResponse(res);
 
         return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
 
