@@ -38,10 +38,15 @@ public class ReportServiceImpl implements ReportService {
         Patient patient = this.patientService.getById(patientId);
         Doctor doctor = this.doctorService.getById(doctorId);
 
+        report.setProblem(req.getProblem());
+        report.setObservation(req.getObservation());
+        report.setSuggestion(req.getSuggestion());
+        report.setDate(new Date());
         report.setDoctor(doctor);
         report.setPatient(patient);
         report.setResult(req.getResult());
         report.setTestType(req.getTestType());
+        
 
         report = this.reportRepo.save(report);
 

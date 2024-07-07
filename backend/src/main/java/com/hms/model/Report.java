@@ -20,6 +20,12 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String problem;
+
+    private String observation;
+    
+    private String suggestion;
+
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
@@ -30,5 +36,7 @@ public class Report {
 
     private String testType;
     private String result;
+    private String date;
+    
 
 }
