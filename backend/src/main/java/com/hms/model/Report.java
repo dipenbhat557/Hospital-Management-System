@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Date;
 
 @Entity
 @Data
@@ -36,7 +37,7 @@ public class Report {
 
     private String testType;
     private String result;
-    private String date;
+    private Date date;
     
 
 }

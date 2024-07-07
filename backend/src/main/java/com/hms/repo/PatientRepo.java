@@ -6,4 +6,5 @@ import com.hms.model.User;
 
 public interface PatientRepo extends JpaRepository<Patient, Integer> {
     Patient findByUser(User user);
+    Patient findByName(String name);
 }

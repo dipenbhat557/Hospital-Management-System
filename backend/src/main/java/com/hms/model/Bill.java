@@ -27,10 +27,13 @@ public class Bill {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
-    private double amount;
-
+    private String doctorName;
+    private String department;
+    private String description;
     private Date date;
-
+    private double amount;
+    private String remarks;
     private String paymentMethod;
+
 
 }

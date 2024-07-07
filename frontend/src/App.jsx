@@ -14,6 +14,7 @@ import PatientSetup from "./pages/auth/PatientSetup";
 import DoctorSetup from "./pages/auth/DoctorSetup";
 import EmployeeSetup from "./pages/auth/EmployeeSetup";
 import { RecoilRoot } from "recoil"
+import PaymentPage from "./pages/patient/PaymentPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/patient/new" element={<PatientMainPage />} />
 
           <Route path="/patient/payment" element={<PatientPaymentHistory />} />
+          <Route path="/patient/payment/on" element={<PaymentPage />} />
           <Route path="/patient/profile" element={<PatientProfile />} />
           <Route path="/auth/signup" element={<CommonSignup />} />
           <Route path="/auth/signin" element={<CommonSignin />} />

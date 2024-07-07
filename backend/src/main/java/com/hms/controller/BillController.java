@@ -45,4 +45,9 @@ public class BillController {
         return new ResponseEntity<>("Bill deleted successfully", HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Bill>> getByUserId(@PathVariable int userId){
+        return new ResponseEntity<>(this.billService.getByUserId(userId),HttpStatus.OK);
+    }
+
 }
