@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { userState, tokenState } from "../../store/atom";
@@ -10,6 +10,7 @@ function CommonSignin() {
   });
   const [user, setUser] = useRecoilState(userState);
   const [token, setToken] = useRecoilState(tokenState);
+  const [data, setData] = useState({});
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -29,22 +30,30 @@ function CommonSignin() {
       );
 
       const data = await response.data;
-      setUser(data?.response);
-      setToken(data?.token);
-
-      if (user.role === "DOCTOR") {
-        window.location.href = "/doctor";
-      } else if (user.role === "PATIENT") {
-        window.location.href = "/patient";
-      } else {
-        window.location.href = "/employee";
-      }
-
       setFormData({ email: "", password: "" });
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    if (data?.response && data?.token) {
+      setUser(data.response);
+      setToken(data.token);
+    }
+  }, [data, setUser, setToken]);
+
+  useEffect(() => {
+    if(user?.role){
+          if (user?.role === "DOCTOR") {
+          window.location.href = "/doctor";
+        } else if (user?.role === "PATIENT") {
+          window.location.href = "/patient";
+        } else {
+          window.location.href = "/employee";
+        }
+      }
+  }, [user]);
 
   return (
     <div className="flex h-screen items-center justify-center">
