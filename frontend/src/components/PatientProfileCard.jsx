@@ -1,7 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiEdit } from "react-icons/ci";
+import { useEffect } from "react";
+import axios from "axios";
 
 function PatientProfileCard() {
+  const [user, setUser] = useState(
+    () => JSON.parse(localStorage.getItem("user")) || null
+  );
+
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  const [userData, setUserData] = useState("");
+
+  useEffect(() => {
+    const getPatient = async () => {
+      try {
+        const userResponse = await axios.get(
+          `${import.meta.env.VITE_APP_API_ROOT}/api/user/${user?.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userData = await userResponse.data;
+        setUserData(userData);
+        console.log(userData);
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    };
+    getPatient();
+  }, [token]);
+
   return (
     <div>
       <div className="h-[80vh] flex justify-center items-center w-[70vw] p-4">
@@ -10,20 +41,22 @@ function PatientProfileCard() {
             <p>
               <span> Name :</span>
               <br />{" "}
-              <span className="text-base text-slate-400">Aakash Subedi</span>
+              <span className="text-base text-slate-400">{userData.name}</span>
             </p>
           </div>
           <div className="address">
             <p>
               <span>Address :</span> <br />
               <span className="text-base text-slate-400">
-                Jain Global Campus
+                {userData?.patient?.address?.address}
               </span>
             </p>
           </div>
           <div className="city">
             <span>City :</span> <br />
-            <span className="text-base text-slate-400">Kanakapura</span>
+            <span className="text-base text-slate-400">
+              {userData?.patient?.address?.city}
+            </span>
           </div>
           <div className="district">
             <span>District :</span> <br />
@@ -31,21 +64,25 @@ function PatientProfileCard() {
           </div>
           <div className="state">
             <span> State :</span> <br />{" "}
-            <span className="text-base text-slate-400">Karnataka</span>
+            <span className="text-base text-slate-400">
+              {userData?.patient?.address?.state}{" "}
+            </span>
           </div>
           <div className="pincode">
             <span className="font-medium">Pin Code :</span> <br />
-            <span className="text-slate-400 text-base">51202</span>
+            <span className="text-slate-400 text-base">
+              {userData?.patient?.address?.pinNo}
+            </span>
           </div>
           <div className="email">
             <span>Email : </span> <br />{" "}
-            <span className="text-base text-slate-400">
-              herewegoagain@gmail.com
-            </span>
+            <span className="text-base text-slate-400">{userData.email}</span>
           </div>
           <div className="contact no .">
             <span>Contact :</span> <br />
-            <span className="text-base text-slate-400">894574564</span>
+            <span className="text-base text-slate-400">
+              {userData?.patient?.mobNo}
+            </span>
           </div>
         </div>
         <div className="image flex flex-col items-center justify-center h-[20vh]">

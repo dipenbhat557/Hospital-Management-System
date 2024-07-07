@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { userState, tokenState } from "../../store/atom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function CommonSignin() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ function CommonSignin() {
   });
   const [user, setUser] = useRecoilState(userState);
   const [token, setToken] = useRecoilState(tokenState);
+  const [data, setData] = useState({});
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -27,26 +30,35 @@ function CommonSignin() {
           },
         }
       );
-      const data = response.data;
-      console.log(data.token);
-      console.log(data.response);
-      setToken(data.token);
-      setUser(data.response);
-      console.log(user);
-      console.log(token);
-      if (user.role === "DOCTOR") {
-        window.location.href = "/doctor";
-      } else if (user.role === "PATIENT") {
-        window.location.href = "/patient";
-      } else {
-        window.location.href = "/employee";
-      }
 
+      const data = await response.data;
+      setData(data); // Set data state
       setFormData({ email: "", password: "" });
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    if (data?.response && data?.token) {
+      setUser(data.response);
+      setToken(data.token);
+      localStorage.setItem("token", data?.token);
+      localStorage.setItem("user", JSON.stringify(data?.response));
+    }
+  }, [data, setUser, setToken]);
+
+  useEffect(() => {
+    if (user?.role) {
+      if (user?.role === "DOCTOR") {
+        navigate("/doctor"); // Use navigate for routing
+      } else if (user?.role === "PATIENT") {
+        navigate("/patient"); // Use navigate for routing
+      } else {
+        navigate("/"); // Use navigate for routing
+      }
+    }
+  }, [user, navigate]);
 
   return (
     <div className="flex h-screen items-center justify-center">

@@ -14,6 +14,7 @@ import com.hms.repo.DoctorRepo;
 import com.hms.repo.UserRepo;
 import com.hms.service.DoctorService;
 import com.hms.service.EmployeeService;
+import com.hms.service.UserService;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -26,6 +27,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Doctor create(DoctorSignupRequest doctorSignupRequest) {
@@ -67,6 +71,16 @@ public class DoctorServiceImpl implements DoctorService {
                 .orElseThrow(() -> new ResourceNotFoundException("The expected doctor is not found"));
 
         this.doctorRepo.delete(doctor);
+    }
+
+    @Override
+    public Doctor getByUserId(int id) {
+
+        User user = this.userService.getById(id);
+
+        Doctor doctor = this.doctorRepo.findByEmployee_User(user);
+
+        return doctor;
     }
 
 }

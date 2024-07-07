@@ -17,4 +17,6 @@ public interface DoctorService {
     public Doctor getById(int id);
 
     public void deleteById(int id);
+
+    public Doctor getByUserId(int id);
 }
