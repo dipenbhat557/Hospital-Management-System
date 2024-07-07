@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useSetRecoilState } from 'recoil';
 import DoctorNavbar from "../../components/DoctorNavbar";
+import { tokenState, userState } from "../../store/atom";
 
 function CommonSignup() {
   const [formData, setFormData] = useState({
@@ -9,13 +12,35 @@ function CommonSignup() {
     role: "",
   });
 
+  const setUser = useSetRecoilState(userState);
+  const setToken = useSetRecoilState(tokenState);
+
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submitted:", formData);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_APP_API_ROOT}/auth/signup`, formData);
+      const { token, response: userData } = response.data;
+
+      setToken(token);
+      setUser(userData);
+
+      console.log("User signed up:", userData);
+
+      if(userData?.role === "DOCTOR"){
+        window.location.href="/auth/doctor"
+      }else if(userData?.role==="PATIENT"){
+        window.location.href="/auth/patient"
+      }else{
+        window.location.href="/auth/employee"
+      }
+
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
     setFormData({ name: "", email: "", password: "", role: "" });
   };
 
@@ -98,10 +123,10 @@ function CommonSignup() {
                 required
               >
                 <option value="">Select Role</option>
-                <option value="doctor">Doctor</option>
-                <option value="patient">Patient</option>
-                <option value="admin">Admin</option>
-                <option value="employee">Employee</option>
+                <option value="DOCTOR">Doctor</option>
+                <option value="PATIENT">Patient</option>
+                <option value="ADMIN">Admin</option>
+                <option value="EMPLOYEE">Employee</option>
               </select>
             </div>
             <button
