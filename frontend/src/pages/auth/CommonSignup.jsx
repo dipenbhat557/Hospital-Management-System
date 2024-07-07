@@ -26,7 +26,7 @@ function CommonSignup() {
         `${import.meta.env.VITE_APP_API_ROOT}/auth/signup`,
         formData
       );
-      const { token, response: userData } = response.data;
+      const { token, response: userData } = await response.data;
 
       setToken(token);
       setUser(userData);
