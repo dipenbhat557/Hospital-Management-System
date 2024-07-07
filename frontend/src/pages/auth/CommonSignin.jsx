@@ -1,20 +1,50 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import axios from "axios";
+import { userState, tokenState } from "../../store/atom";
 
 function CommonSignin() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [user, setUser] = useRecoilState(userState);
+  const [token, setToken] = useRecoilState(tokenState);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here (e.g., send data to server)
-    console.log("Form submitted:", formData);
-    setFormData({ email: "", password: "" }); // Clear form after submit
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_ROOT}/auth/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = response.data;
+      setUser(data.response);
+      setToken(data.token);
+      console.log("Login successful!", data.response);
+
+      if (user.role === "DOCTOR") {
+        window.location.href = "/doctor";
+      } else if (user.role === "PATIENT") {
+        window.location.href = "/patient";
+      } else {
+        window.location.href = "/employee";
+      }
+
+      setFormData({ email: "", password: "" });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (

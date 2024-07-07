@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from "recoil";
 import DoctorNavbar from "../../components/DoctorNavbar";
 import { tokenState, userState } from "../../store/atom";
 
@@ -22,7 +22,10 @@ function CommonSignup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_API_ROOT}/auth/signup`, formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_ROOT}/auth/signup`,
+        formData
+      );
       const { token, response: userData } = response.data;
 
       setToken(token);
@@ -30,14 +33,13 @@ function CommonSignup() {
 
       console.log("User signed up:", userData);
 
-      if(userData?.role === "DOCTOR"){
-        window.location.href="/auth/doctor"
-      }else if(userData?.role==="PATIENT"){
-        window.location.href="/auth/patient"
-      }else{
-        window.location.href="/auth/employee"
+      if (userData?.role === "DOCTOR") {
+        window.location.href = "/auth/doctor";
+      } else if (userData?.role === "PATIENT") {
+        window.location.href = "/auth/patient";
+      } else {
+        window.location.href = "/auth/employee";
       }
-
     } catch (error) {
       console.error("Error during signup:", error);
     }
