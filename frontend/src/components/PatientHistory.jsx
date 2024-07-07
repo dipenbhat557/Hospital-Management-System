@@ -1,24 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const consultations = [
-  {
-    date: "01-09-2023",
-    department: "ENT",
-    doctorName: "Dr Joseph",
-    doctorTitle: "MBBS",
-    nextConsultation: "01-10-2023",
-  },
-  {
-    date: "01-06-2023",
-    department: "Physician",
-    doctorName: "Dr Ann Mathew",
-    doctorTitle: "MBBS",
-    nextConsultation: "02-08-2023",
-  },
-];
+import { useRecoilValue } from "recoil";
+import { tokenState, userState } from "../store/atom";
+import axios from "axios";
 
 function PatientHistory() {
+  const [consultations, setConsultations] = useState([]);
+  const [user, setUser] = useState(
+    () => JSON.parse(localStorage.getItem("user")) || null
+  );
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  const userId = user?.id;
+
+  useEffect(() => {
+    console.log("User is ", user);
+    console.log("User iyyy");
+    const fetchData = async () => {
+      try {
+        const newUser = await axios.get(
+          `${import.meta.env.VITE_APP_API_ROOT}/api/user/me`,
+          {
+            headers: {
+              authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        const userRes = await newUser.data;
+
+        const patientId = userRes?.patient?.id;
+
+        console.log(userRes);
+        console.log(patientId);
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_ROOT}/api/history/${patientId}`,
+          {
+            headers: {
+              authorization: "Bearer " + token,
+            },
+          }
+        );
+        const data = await response.data;
+        console.log(user);
+        console.log(data);
+        setConsultations(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
+
   return (
     <div className="flex w-[75vw] justify-center flex-col items-center gap-7">
       <div className="previous-consultations pt-8 ">
@@ -26,21 +60,23 @@ function PatientHistory() {
           <thead>
             <tr className="bg-gray-200 text-left text-sm font-medium">
               <th className="px-4 py-2">DEPARTMENT</th>
-              <th className="px-4 py-2">DATE</th>
+              <th className="px-4 py-2">RESULT</th>
               <th className="px-4 py-2">DOCTOR</th>
             </tr>
           </thead>
           <tbody>
-            {consultations.map((consultation) => (
+            {consultations?.map((consultation) => (
               <tr
-                key={consultation.date}
+                key={consultation.id}
                 className="border-b border-gray-200 hover:bg-gray-100"
               >
-                <td className="px-4 py-2">{consultation.department}</td>
-                <td className="px-4 py-2">{consultation.date}</td>
                 <td className="px-4 py-2">
-                  {consultation.doctorName} <br />
-                  {consultation.doctorTitle}
+                  {consultation.doctor.department || " "}
+                </td>
+                <td className="px-4 py-2">{consultation.result || " "}</td>
+                <td className="px-4 py-2">
+                  {consultation.doctor.name || " "} <br />
+                  {consultation.doctor.qualification || " "}
                 </td>
               </tr>
             ))}

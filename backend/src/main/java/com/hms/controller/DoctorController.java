@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,11 @@ public class DoctorController {
     public ResponseEntity<String> deleteDoctor(@PathVariable int id) {
         this.doctorService.deleteById(id);
         return new ResponseEntity<>("The doctor is deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/api/doctor/user/{id}")
+    public ResponseEntity<Doctor> getByUser(@PathVariable int id) {
+        return new ResponseEntity<>(this.doctorService.getByUserId(id), HttpStatus.OK);
     }
 
 }

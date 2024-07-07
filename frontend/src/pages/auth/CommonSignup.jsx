@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import DoctorNavbar from "../../components/DoctorNavbar";
 import { tokenState, userState } from "../../store/atom";
 
@@ -12,7 +12,7 @@ function CommonSignup() {
     role: "",
   });
 
-  const setUser = useSetRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
   const setToken = useSetRecoilState(tokenState);
 
   const handleChange = (event) => {
@@ -31,7 +31,10 @@ function CommonSignup() {
       setToken(token);
       setUser(userData);
 
-      console.log("User signed up:", userData);
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      console.log("User signed up:", user);
 
       if (userData?.role === "DOCTOR") {
         window.location.href = "/auth/doctor";

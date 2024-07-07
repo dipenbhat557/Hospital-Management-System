@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { RiFirstAidKitLine } from "react-icons/ri";
 
 function DoctorConsultations() {
+  const [patients, setPatients] = useState([]);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/appointment",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setPatients(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
   return (
     <div className="flex justify-center align-middle h-fit w-full">
       <div className="card w-full max-w-4xl p-4">
@@ -16,50 +42,30 @@ function DoctorConsultations() {
             </div>
           </div>
           <div className="consultations">
-            <table className="min-w-full bg-white  border-4 shadow-lg  border-gray-200">
+            <table className="min-w-full bg-white border-4 shadow-lg border-gray-200">
               <thead>
                 <tr>
                   <th className="px-4 py-2 border">Patient's Name</th>
-                  <th className="px-4 py-2 border">Arriving Time</th>
-                  <th className="px-4 py-2 border">Appointment</th>
+                  <th className="px-4 py-2 border">Arriving Date</th>
+                  <th className="px-4 py-2 border">Department</th>
                   <th className="px-4 py-2 border">Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="px-4 py-2 border">John Doe</td>
-                  <td className="px-4 py-2 border">10:00 AM</td>
-                  <td className="px-4 py-2 border">Routine Checkup</td>
-
-                  <td className="px-4 py-2 border flex gap-2 items-center justify-center">
-                    {" "}
-                    <RiFirstAidKitLine /> ReVisit
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Jane Smith</td>
-                  <td className="px-4 py-2 border">11:00 AM</td>
-                  <td className="px-4 py-2 border">Follow-up</td>
-                  <td className="px-4 py-2 border flex gap-2 items-center justify-center">
-                    <RiFirstAidKitLine /> Visit
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">steven Smith</td>
-                  <td className="px-4 py-2 border">11:15 AM</td>
-                  <td className="px-4 py-2 border">Follow-up</td>
-                  <td className="px-4 py-2 border flex gap-2 items-center justify-center">
-                    <RiFirstAidKitLine /> Visit
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Jane Mcullum</td>
-                  <td className="px-4 py-2 border">11:30 AM</td>
-                  <td className="px-4 py-2 border">Follow-up</td>
-                  <td className="px-4 py-2 border flex gap-2 items-center justify-center">
-                    <RiFirstAidKitLine /> Visit
-                  </td>
-                </tr>
+                {patients.map((patient) => (
+                  <tr key={patient.id}>
+                    <td className="px-4 py-2 border">
+                      {patient.patient?.name}
+                    </td>
+                    <td className="px-4 py-2 border">{patient.date}</td>
+                    <td className="px-4 py-2 border">
+                      {patient.doctor.department}
+                    </td>
+                    <td className="px-4 py-2 border flex gap-2 items-center justify-center">
+                      <RiFirstAidKitLine /> {patient.verfied}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

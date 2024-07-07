@@ -1,11 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PatientSignupForm = () => {
+  const [user, setUser] = useState(
+    () => JSON.parse(localStorage.getItem("user")) || null
+  );
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+
+  const navigate = useNavigate();
+
+  let userId = user?.id || 0;
+  useEffect(() => {
+    console.log("initial user is ", user);
+    console.log("user id is ", userId);
+  }, [user, userId]);
+
+  if (userId === 0) {
+    const fetchUserId = async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_ROOT}/user/me`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const userData = await response.data;
+      setUser(userData);
+      userId = userData?.id;
+    };
+    fetchUserId();
+  }
+
   const [formData, setFormData] = useState({
     name: "",
     dob: "",
     gender: "",
     mobNo: "",
+    userId: userId,
     age: 0,
     address: {
       id: 0,
@@ -35,9 +70,27 @@ const PatientSignupForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_ROOT}/auth/patient`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Response:", response.data);
+
+      navigate("/patient");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
