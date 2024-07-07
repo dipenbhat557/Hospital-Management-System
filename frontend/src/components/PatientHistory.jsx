@@ -18,7 +18,7 @@ function PatientHistory() {
     const fetchData = async () => {
       try {
         const newUser = await axios.get(
-          `${import.meta.env.VITE_APP_API_ROOT}/api/user/me`,
+          `${import.meta.env.VITE_APP_API_ROOT}/api/user/${user.id}`,
           {
             headers: {
               authorization: "Bearer " + token,
