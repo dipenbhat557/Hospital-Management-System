@@ -1,5 +1,7 @@
 package com.hms.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +58,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.userRepo.save(user);
 
         return employee;
+    }
+
+    @Override
+    public List<Employee> getAll() {
+        return this.employeeRepo.findAll();
+    }
+
+    @Override
+    public Employee getById(int id) {
+        return this.employeeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("The emoloye not found"));
+    }
+
+    @Override
+    public void deleteById(int id) {
+        this.employeeRepo.delete(getById(id));
     }
 
 }
