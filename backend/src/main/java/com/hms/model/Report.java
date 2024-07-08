@@ -1,5 +1,7 @@
 package com.hms.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +26,7 @@ public class Report {
     private String problem;
 
     private String observation;
-    
+
     private String suggestion;
 
     @ManyToOne
@@ -38,6 +40,5 @@ public class Report {
     private String testType;
     private String result;
     private Date date;
-    
 
 }

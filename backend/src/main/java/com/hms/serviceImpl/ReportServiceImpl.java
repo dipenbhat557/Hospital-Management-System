@@ -1,5 +1,6 @@
 package com.hms.serviceImpl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Date;
 
@@ -47,7 +48,6 @@ public class ReportServiceImpl implements ReportService {
         report.setPatient(patient);
         report.setResult(req.getResult());
         report.setTestType(req.getTestType());
-        
 
         report = this.reportRepo.save(report);
 

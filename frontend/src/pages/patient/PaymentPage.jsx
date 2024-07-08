@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const PaymentPage = () => {
-   const [user, setUser] = useState(
+  const [user, setUser] = useState(
     () => JSON.parse(localStorage.getItem("user")) || null
   );
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
 
   const [formData, setFormData] = useState({
     patientName: user?.name,
-    doctorName: '',
-    department: '',
-    description: '',
-    amount: '',
-    remarks: '',
-    paymentMethod: ''
+    doctorName: "",
+    department: "",
+    description: "",
+    amount: "",
+    remarks: "",
+    paymentMethod: "",
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -38,8 +38,8 @@ const PaymentPage = () => {
         }
       );
 
-      console.log('Payment data submitted:', response.data);
-      window.location.href="/patient"
+      console.log("Payment data submitted:", response.data);
+      window.location.href = "/patient";
     } catch (error) {
       console.error("Error:", error);
     }
@@ -48,11 +48,14 @@ const PaymentPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Payment Information</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          Payment Information
+        </h2>
         <form onSubmit={handleSubmit}>
-          
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Doctor Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Doctor Name
+            </label>
             <input
               type="text"
               name="doctorName"
@@ -63,7 +66,9 @@ const PaymentPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Department</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Department
+            </label>
             <input
               type="text"
               name="department"
@@ -74,7 +79,9 @@ const PaymentPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <input
               type="text"
               name="description"
@@ -84,9 +91,11 @@ const PaymentPage = () => {
               required
             />
           </div>
-          
+
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Amount</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Amount
+            </label>
             <input
               type="number"
               name="amount"
@@ -97,7 +106,9 @@ const PaymentPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Remarks</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Remarks
+            </label>
             <input
               type="text"
               name="remarks"
@@ -107,7 +118,9 @@ const PaymentPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Payment Method</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Payment Method
+            </label>
             <select
               name="paymentMethod"
               value={formData.paymentMethod}

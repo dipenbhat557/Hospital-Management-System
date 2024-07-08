@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { RiFirstAidKitLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 function DoctorConsultations() {
   const [patients, setPatients] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -27,6 +29,10 @@ function DoctorConsultations() {
 
     fetchPatients();
   }, []);
+
+  const handleNavigate = (patientId) => {
+    navigate(`/doctor/new`, { state: { patientId: patientId } });
+  };
 
   return (
     <div className="flex justify-center align-middle h-fit w-full">
@@ -62,7 +68,17 @@ function DoctorConsultations() {
                       {patient.doctor.department}
                     </td>
                     <td className="px-4 py-2 border flex gap-2 items-center justify-center">
-                      <RiFirstAidKitLine /> {patient.verfied}
+                      <button
+                        onClick={() => handleNavigate(patient.patient?.id)}
+                        className="flex gap-2 items-center"
+                      >
+                        <RiFirstAidKitLine />
+                        {patient.verified ? (
+                          <p>Not verified</p>
+                        ) : (
+                          <p>Check in</p>
+                        )}
+                      </button>
                     </td>
                   </tr>
                 ))}

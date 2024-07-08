@@ -13,13 +13,13 @@ import CommonSignin from "./pages/auth/CommonSignin";
 import PatientSetup from "./pages/auth/PatientSetup";
 import DoctorSetup from "./pages/auth/DoctorSetup";
 import EmployeeSetup from "./pages/auth/EmployeeSetup";
-import { RecoilRoot } from "recoil"
+import { RecoilRoot } from "recoil";
+import NewReport from "./pages/doctor/NewReport";
 import PaymentPage from "./pages/patient/PaymentPage";
 
 function App() {
   return (
     <div>
-      <RecoilRoot>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Common />} />
@@ -39,9 +39,9 @@ function App() {
           <Route path="/auth/patient" element={<PatientSetup />} />
           <Route path="/auth/doctor" element={<DoctorSetup />} />
           <Route path="/auth/employee" element={<EmployeeSetup />} />
+          <Route path="/doctor/new" element={<NewReport />} />
         </Routes>
       </BrowserRouter>
-      </RecoilRoot>
     </div>
   );
 }
