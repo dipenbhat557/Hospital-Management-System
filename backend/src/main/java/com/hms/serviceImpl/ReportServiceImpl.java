@@ -28,6 +28,9 @@ public class ReportServiceImpl implements ReportService {
     private PatientService patientService;
 
     @Autowired
+    private PatientRepo patientRepo;
+
+    @Autowired
     private DoctorService doctorService;
 
     @Override
@@ -36,8 +39,8 @@ public class ReportServiceImpl implements ReportService {
 
         int patientId = req.getPatientId();
         int doctorId = req.getDoctorId();
-
-        Patient patient = this.patientService.getById(patientId);
+        System.out.println("The patient id is "+patientId+" and is "+req.getPatientId());
+        Patient patient = this.patientRepo.findById(req.getPatientId()).orElseThrow(()->new ResourceNotFoundException("Expected patient now not found"));
         Doctor doctor = this.doctorService.getById(doctorId);
 
         report.setProblem(req.getProblem());
