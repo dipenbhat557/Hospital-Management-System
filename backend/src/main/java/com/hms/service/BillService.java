@@ -15,4 +15,5 @@ public interface BillService {
 
     public void deleteById(int id);
 
+public List<Bill> getByUserId(int userId);
 }

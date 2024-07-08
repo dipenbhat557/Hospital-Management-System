@@ -65,7 +65,7 @@ function PatientHistory() {
             </tr>
           </thead>
           <tbody>
-            {consultations?.map((consultation) => (
+            {consultations?.length === 0 ?<p className="text-[35px] font-semibold text-center text-slate-400 w-full">No previous medical reports</p>:consultations?.map((consultation) => (
               <tr
                 key={consultation.id}
                 className="border-b border-gray-200 hover:bg-gray-100"

@@ -8,7 +8,7 @@ const DoctorNavbar = () => {
       </div>
       <div className="flex gap-6 text-slate-500">
         <p>
-          <span className="font-semibold">DATE</span> : 12/08/24
+          <span className="font-semibold">DATE</span> : 08/07/24
         </p>
         <p>
           <span className="font-semibold">DATE</span> : Monday

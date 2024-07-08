@@ -9,10 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BillRequest {
 
-    private int patientId;
+    private String patientName;
 
+    private String doctorName;
+    private String department;
+    private String description;
     private int amount;
-
+    private String remarks;
     private String paymentMethod;
 
 }

@@ -67,6 +67,8 @@ const MedicalReport = () => {
         }
       );
       console.log("Medical report submitted successfully:", response.data);
+      alert("Report Added Successfully");
+      navigate("/doctor");
       // Optionally, you can handle navigation or display success message here
     } catch (error) {
       console.error("Error submitting medical report:", error);
